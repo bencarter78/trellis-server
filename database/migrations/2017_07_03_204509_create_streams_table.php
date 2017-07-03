@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateObjectivesTable extends Migration
+class CreateStreamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateObjectivesTable extends Migration
      */
     public function up()
     {
-        Schema::create('objectives', function (Blueprint $table) {
+        Schema::create('streams', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateObjectivesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('objectives');
+        Schema::dropIfExists('streams');
     }
 }
