@@ -6,8 +6,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Auth::routes();
-Route::post('/login', 'Api\Auth\AuthController@authenticate');
+Route::post('/login', 'Api\Auth\LoginController@index');
+Route::post('/register', 'Api\Auth\RegisterController@register');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('/projects', 'Api\ProjectController');
