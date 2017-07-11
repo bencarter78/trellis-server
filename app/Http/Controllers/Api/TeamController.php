@@ -21,7 +21,7 @@ class TeamController extends Controller
             return $this->response([
                 'ok' => true,
                 'team' => Team::create([
-                    'uid' => strtolower(str_random(7) . Carbon::now()->timestamp),
+                    'uid' => str_random(10),
                     'name' => $request->name,
                     'owner_id' => JWTAuth::parseToken()->authenticate()->id,
                 ]),

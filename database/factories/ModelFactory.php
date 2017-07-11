@@ -29,7 +29,7 @@ $factory->state(App\User::class, 'demo', function (Faker\Generator $faker) {
 
 $factory->define(App\Team::class, function (Faker\Generator $faker) {
     return [
-        'uid' => strtolower(str_random(7) . Carbon::now()->timestamp),
+        'uid' => str_random(10),
         'name' => 'My Amazing Team',
         'owner_id' => function () {
             return factory(User::class)->create()->id;
