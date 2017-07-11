@@ -33,4 +33,12 @@ class TeamController extends Controller
             'detail' => 'Please enter a name for your team.',
         ], 400);
     }
+
+    public function show($uid)
+    {
+        return $this->response([
+            'ok' => true,
+            'team' => Team::with('projects')->whereUid($uid)->get()->first(),
+        ]);
+    }
 }
