@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
+use App\Team;
 use App\Project;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
 
 class ProjectController extends Controller
 {
@@ -35,9 +37,25 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id, Request $request)
     {
-        //
+        if ($request->name) {
+            return $this->response([
+                'ok' => true,
+                'project' => Project::create([
+                    'uid' => str_random(10),
+                    'team_id' => Team::whereUid($id)->first()->id,
+                    'owner_id' => JWTAuth::parseToken()->authenticate()->id,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                ]),
+            ]);
+        }
+
+        return $this->responseError([
+            'title' => 'Invalid data',
+            'detail' => 'Please enter a name for your team.',
+        ], 400);
     }
 
     /**
