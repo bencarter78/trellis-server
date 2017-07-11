@@ -9,7 +9,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ProjectControllerTest extends TestCase
+class TeamProjectControllerTest extends TestCase
 {
     use DatabaseMigrations, WithoutMiddleware;
 
@@ -25,7 +25,7 @@ class ProjectControllerTest extends TestCase
     {
         $team = factory(Team::class)->create();
 
-        $response = $this->post("/api/teams/{$team->id}/projects", [
+        $response = $this->post("/api/teams/{$team->uid}/projects", [
             'name' => 'Demo Project',
             'description' => 'This is the description'
         ]);

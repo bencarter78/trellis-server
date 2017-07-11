@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 
-class ProjectController extends Controller
+class TeamProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
