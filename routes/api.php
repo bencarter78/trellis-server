@@ -11,6 +11,6 @@ Route::post('/register', 'Api\Auth\RegisterController@register');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('/teams/{id}/projects', 'Api\TeamProjectController');
-    Route::resource('/projects', 'Api\ProjectController');
+    Route::resource('/projects', 'Api\UserProjectController');
     Route::resource('/teams', 'Api\TeamController');
 });

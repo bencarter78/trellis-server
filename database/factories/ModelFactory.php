@@ -5,6 +5,13 @@ use Carbon\Carbon;
 
 $factory->define(App\Project::class, function (Faker\Generator $faker) {
     return [
+        'owner_id' => function () {
+            return factory(App\User::class)->create()->id;
+        },
+        'team_id' => function () {
+            return factory(App\Team::class)->create()->id;
+        },
+        'uid' => str_random(10),
         'name' => $faker->words(3, true),
         'description' => $faker->paragraph,
     ];
