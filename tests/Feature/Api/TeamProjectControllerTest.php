@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Team;
 use App\User;
+use App\Project;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -35,6 +36,21 @@ class TeamProjectControllerTest extends TestCase
                      'data' => [
                          'ok' => true,
                          'project' => ['name' => 'Demo Project']
+                     ]
+                ]);
+    }
+
+    /** @test */
+    public function it_returns_a_project_for_a_team()
+    {
+        $project = factory(Project::class)->create();
+
+        $response = $this->get("/api/teams/{$project->team->uid}/projects/{$project->uid}");
+
+        $response->assertStatus(200)
+                 ->assertJson([
+                     'data' => [
+                         'project' => $project->toArray()
                      ]
                 ]);
     }

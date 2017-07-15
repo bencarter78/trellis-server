@@ -64,9 +64,11 @@ class TeamProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($tid, $pid)
     {
-        //
+        return $this->response([
+            'project' => Project::with('team')->whereUid($pid)->first()
+        ]);
     }
 
     /**

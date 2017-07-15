@@ -17,6 +17,6 @@ class Project extends Model
 
     public function team()
     {
-        return $this->belongsTo(Team::class, 'owner_id');
+        return $this->belongsTo(Team::class);
     }
 }
