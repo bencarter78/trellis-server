@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\User;
-use App\Team;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -18,5 +16,10 @@ class Project extends Model
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function objectives()
+    {
+        return $this->hasMany(Objective::class);
     }
 }

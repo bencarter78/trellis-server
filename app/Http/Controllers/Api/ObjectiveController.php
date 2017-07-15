@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Objective;
 use App\Project;
+use App\Objective;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
 
 class ObjectiveController extends Controller
 {
@@ -96,8 +96,17 @@ class ObjectiveController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $oid)
     {
-        //
+        $user = JWTAuth::parseToken()->authenticate();
+        $project = Project::whereUid($id)->first();
+
+        if ($project->owner_id != $user->id) {
+            return abort(403, 'Only the project owner can create objectives');
+        }
+
+        Objective::findOrFail($oid)->delete();
+
+        return $this->response();
     }
 }

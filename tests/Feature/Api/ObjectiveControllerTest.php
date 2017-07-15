@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Api;
 
-use App\Objective;
-use App\Project;
 use App\User;
+use App\Project;
+use App\Objective;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -62,5 +62,17 @@ class ObjectiveControllerTest extends TestCase
             'name' => $objective->name,
         ])
              ->assertStatus(403);
+    }
+
+    /** @test */
+    public function it_removes_an_objective_from_a_project()
+    {
+        $user = factory(User::class)->create();
+        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn($user);
+        $project = factory(Project::class)->create(['owner_id' => $user->id]);
+        $objective = factory(Objective::class)->create(['project_id' => $project->id]);
+
+        $this->delete("/api/projects/{$project->uid}/objectives/{$objective->id}")
+             ->assertStatus(200);
     }
 }
