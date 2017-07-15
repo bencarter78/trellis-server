@@ -67,9 +67,9 @@ class TeamProjectController extends Controller
      */
     public function show($tid, $pid)
     {
-        return $this->response([
-            'project' => Project::with('team')->whereUid($pid)->first()
-        ]);
+        $project = Project::with('team', 'objectives')->whereUid($pid)->first();
+
+        return $this->response(['project' => $project]);
     }
 
     /**
