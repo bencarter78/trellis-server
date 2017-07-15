@@ -1,7 +1,15 @@
 <?php
 
 use App\User;
-use Carbon\Carbon;
+
+$factory->define(App\Objective::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => function () {
+            return factory(App\Project::class)->create()->id;
+        },
+        'name' => $faker->sentence,
+    ];
+});
 
 $factory->define(App\Project::class, function (Faker\Generator $faker) {
     return [

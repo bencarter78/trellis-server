@@ -9,15 +9,13 @@ use App\Http\Controllers\Controller;
 
 class UserProjectController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-        $projects = Project::with('team')
-            ->where('owner_id', JWTAuth::parseToken()->authenticate()->id)
-            ->get();
-            
         return $this->response([
-            'ok' => true,
-            'projects' => $projects
+            'projects' => Project::with('team')->where('owner_id', JWTAuth::parseToken()->authenticate()->id)->get(),
         ]);
     }
 }

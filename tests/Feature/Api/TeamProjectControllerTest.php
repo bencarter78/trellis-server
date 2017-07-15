@@ -32,12 +32,7 @@ class TeamProjectControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'data' => [
-                         'ok' => true,
-                         'project' => ['name' => 'Demo Project']
-                     ]
-                ]);
+                 ->assertJson(['data' => ['project' => ['name' => 'Demo Project']]]);
     }
 
     /** @test */

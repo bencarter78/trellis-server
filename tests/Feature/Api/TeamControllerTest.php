@@ -26,7 +26,7 @@ class TeamControllerTest extends TestCase
         $response = $this->post('/api/teams', ['name' => 'My Team Name']);
 
         $response->assertStatus(200)
-                 ->assertJson(['data' => ['ok' => true, 'team' => ['name' => 'My Team Name']]]);
+                 ->assertJson(['data' => ['team' => ['name' => 'My Team Name']]]);
     }
 
     /** @test */
@@ -46,6 +46,6 @@ class TeamControllerTest extends TestCase
         $response = $this->get('/api/teams/' . $team->uid);
 
         $response->assertStatus(200)
-                 ->assertJson(['data' => ['ok' => true, 'team' => $team->toArray()]]);
+                 ->assertJson(['data' => ['team' => $team->toArray()]]);
     }
 }

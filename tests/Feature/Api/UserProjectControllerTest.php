@@ -30,11 +30,6 @@ class UserProjectControllerTest extends TestCase
         $response = $this->get("/api/projects");
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'data' => [
-                         'ok' => true,
-                         'projects' => [$project->toArray()]
-                     ]
-                ]);
+                 ->assertJson(['data' => ['projects' => [$project->toArray()]]]);
     }
 }

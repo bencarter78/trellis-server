@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Team;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Ramsey\Uuid\Uuid;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
 
 class TeamController extends Controller
 {
@@ -19,7 +17,6 @@ class TeamController extends Controller
     {
         if ($request->name) {
             return $this->response([
-                'ok' => true,
                 'team' => Team::create([
                     'uid' => str_random(10),
                     'name' => $request->name,
@@ -34,6 +31,10 @@ class TeamController extends Controller
         ], 400);
     }
 
+    /**
+     * @param $uid
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($uid)
     {
         return $this->response([
