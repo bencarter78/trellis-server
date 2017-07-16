@@ -17,7 +17,7 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->integer('owner_id')->references('id')->on('users');
             $table->integer('team_id')->references('id')->on('teams');
-            $table->string('uid')->unique();
+            $table->string('uid')->unique()->index();
             $table->string('name');
             $table->text('description');
             $table->timestamps();

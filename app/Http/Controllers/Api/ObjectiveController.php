@@ -45,6 +45,7 @@ class ObjectiveController extends Controller
             return $this->response([
                 'objective' => Objective::create([
                     'project_id' => $project->id,
+                    'uid' => str_random(10),
                     'name' => $request->name,
                 ]),
             ]);

@@ -17,6 +17,7 @@ class CreateStreamsTable extends Migration
             $table->increments('id');
             $table->integer('project_id')->references('id')->on('projects');
             $table->integer('owner_id')->references('id')->on('users');
+            $table->string('uid')->unique()->index();
             $table->string('name');
             $table->timestamps();
         });

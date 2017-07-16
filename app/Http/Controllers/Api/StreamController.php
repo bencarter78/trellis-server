@@ -44,6 +44,7 @@ class StreamController extends Controller
                 'objective' => Stream::create([
                     'project_id' => $project->id,
                     'owner_id' => $request->has('owner_id') ? $request->owner_id : $user->id,
+                    'uid' => str_random(10),
                     'name' => $request->name,
                 ]),
             ]);

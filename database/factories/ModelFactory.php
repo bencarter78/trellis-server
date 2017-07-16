@@ -7,6 +7,7 @@ $factory->define(App\Objective::class, function (Faker\Generator $faker) {
         'project_id' => function () {
             return factory(App\Project::class)->create()->id;
         },
+        'uid' => str_random(10),
         'name' => $faker->sentence,
     ];
 });
@@ -33,6 +34,7 @@ $factory->define(App\Stream::class, function (Faker\Generator $faker) {
         'owner_id' => function () {
             return factory(App\User::class)->create()->id;
         },
+        'uid' => str_random(10),
         'name' => $faker->name,
     ];
 });

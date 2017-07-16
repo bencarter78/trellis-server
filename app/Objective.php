@@ -9,7 +9,7 @@ class Objective extends Model
     /**
      * @var array
      */
-    protected $fillable = ['project_id', 'name'];
+    protected $fillable = ['project_id', 'uid', 'name'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
