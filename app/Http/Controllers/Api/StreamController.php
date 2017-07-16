@@ -2,76 +2,68 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Team;
+use App\Stream;
 use App\Project;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 
-class TeamProjectController extends Controller
+class StreamController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($uid)
     {
-        return $this->response(['projects' => Project::all()]);
-    }
+        $project = Project::whereUid($uid)->first();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->response([
+            'streams' => Stream::where(['project_id' => $project->id])->get(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param                           $id
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store($id, Request $request)
     {
+        $user = JWTAuth::parseToken()->authenticate();
+        $project = Project::whereUid($id)->first();
+
+        if ($project->owner_id != $user->id) {
+            return abort(403, 'Only the project owner can create streams');
+        }
+
         if ($request->name) {
             return $this->response([
-                'project' => Project::create([
-                    'uid' => str_random(10),
-                    'team_id' => Team::whereUid($id)->first()->id,
-                    'owner_id' => JWTAuth::parseToken()->authenticate()->id,
+                'objective' => Stream::create([
+                    'project_id' => $project->id,
+                    'owner_id' => $request->has('owner_id') ? $request->owner_id : $user->id,
                     'name' => $request->name,
-                    'description' => $request->description,
                 ]),
             ]);
         }
 
         return $this->responseError([
             'title' => 'Invalid data',
-            'detail' => 'Please enter a name for your team.',
+            'detail' => 'Please enter the name of the stream.',
         ], 400);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param $tid
-     * @param $pid
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($tid, $pid)
+    public function show($id)
     {
-        $project = Project::with('team', 'objectives', 'streams')
-            ->whereUid($pid)
-            ->first();
-
-        return $this->response(['project' => $project]);
+        //
     }
 
     /**
@@ -103,8 +95,17 @@ class TeamProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($pid, $sid)
     {
-        //
+        $user = JWTAuth::parseToken()->authenticate();
+        $project = Project::whereUid($pid)->first();
+
+        if ($project->owner_id != $user->id) {
+            return abort(403, 'Only the project owner can delete streams');
+        }
+
+        Stream::findOrFail($sid)->delete();
+
+        return $this->response();
     }
 }

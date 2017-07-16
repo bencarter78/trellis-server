@@ -102,7 +102,7 @@ class ObjectiveController extends Controller
         $project = Project::whereUid($id)->first();
 
         if ($project->owner_id != $user->id) {
-            return abort(403, 'Only the project owner can create objectives');
+            return abort(403, 'Only the project owner can delete objectives');
         }
 
         Objective::findOrFail($oid)->delete();

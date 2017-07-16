@@ -15,6 +15,9 @@ class CreateStreamsTable extends Migration
     {
         Schema::create('streams', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('project_id')->references('id')->on('projects');
+            $table->integer('owner_id')->references('id')->on('users');
+            $table->string('name');
             $table->timestamps();
         });
     }

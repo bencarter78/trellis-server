@@ -13,6 +13,11 @@ class Project extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function streams()
+    {
+        return $this->hasMany(Stream::class);
+    }
+
     public function team()
     {
         return $this->belongsTo(Team::class);

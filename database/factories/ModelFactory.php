@@ -25,6 +25,18 @@ $factory->define(App\Project::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Stream::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => function () {
+            return factory(App\Project::class)->create()->id;
+        },
+        'owner_id' => function () {
+            return factory(App\User::class)->create()->id;
+        },
+        'name' => $faker->name,
+    ];
+});
+
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
