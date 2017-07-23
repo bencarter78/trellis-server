@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -25,17 +27,29 @@ class Controller extends BaseController
     }
 
     /**
-     * @param array $data
+     * @param array $errors
      * @param int   $status
      * @param array $headers
      * @return \Illuminate\Http\JsonResponse
      */
-    public function responseError($data = [], $status = 500, $headers = [])
+    public function responseError($errors = [], $status = 500, $headers = [])
     {
-        $data = array_merge($data, ['status' => $status]);
+        $errors = array_merge($errors, ['status' => $status]);
 
         return response()->json([
-            'errors' => $data,
+            'errors' => $errors,
         ], $status, $headers);
+    }
+
+    /**
+     * Attempts to authenticate the user from the supplied JWT
+     */
+    public function userFromToken()
+    {
+        try {
+            return JWTAuth::parseToken()->authenticate();
+        } catch (JWTException $e) {
+            return abort(401, 'Please log in to access ' . config('trellis.app.name'));
+        }
     }
 }

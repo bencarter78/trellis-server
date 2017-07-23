@@ -1,6 +1,25 @@
 <?php
 
 use App\User;
+use Carbon\Carbon;
+
+$factory->define(App\Milestone::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => function () {
+            return factory(App\Project::class)->create()->id;
+        },
+        'uid' => str_random(10),
+        'name' => $faker->name,
+        'description' => $faker->paragraph,
+        'due_on' => Carbon::now()->addMonth(),
+    ];
+});
+
+$factory->state(App\User::class, 'demo', function (Faker\Generator $faker) {
+    return [
+        'email' => config('trellis.demo.user.email'),
+    ];
+});
 
 $factory->define(App\Objective::class, function (Faker\Generator $faker) {
     return [
@@ -9,6 +28,7 @@ $factory->define(App\Objective::class, function (Faker\Generator $faker) {
         },
         'uid' => str_random(10),
         'name' => $faker->sentence,
+        'due_on' => Carbon::now()->addMonth(),
     ];
 });
 
@@ -23,19 +43,30 @@ $factory->define(App\Project::class, function (Faker\Generator $faker) {
         'uid' => str_random(10),
         'name' => $faker->words(3, true),
         'description' => $faker->paragraph,
+        'due_on' => Carbon::now()->addMonth(),
     ];
 });
 
 $factory->define(App\Stream::class, function (Faker\Generator $faker) {
     return [
+        'team_id' => function () {
+            return factory(App\Team::class)->create()->id;
+        },
         'project_id' => function () {
             return factory(App\Project::class)->create()->id;
         },
-        'owner_id' => function () {
-            return factory(App\User::class)->create()->id;
-        },
         'uid' => str_random(10),
         'name' => $faker->name,
+    ];
+});
+
+$factory->define(App\Team::class, function (Faker\Generator $faker) {
+    return [
+        'uid' => str_random(10),
+        'name' => 'My Amazing Team',
+        'owner_id' => function () {
+            return factory(User::class)->create()->id;
+        },
     ];
 });
 
@@ -53,15 +84,5 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->state(App\User::class, 'demo', function (Faker\Generator $faker) {
     return [
         'email' => config('trellis.demo.user.email'),
-    ];
-});
-
-$factory->define(App\Team::class, function (Faker\Generator $faker) {
-    return [
-        'uid' => str_random(10),
-        'name' => 'My Amazing Team',
-        'owner_id' => function () {
-            return factory(User::class)->create()->id;
-        },
     ];
 });

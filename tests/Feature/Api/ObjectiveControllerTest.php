@@ -2,14 +2,11 @@
 
 namespace Tests\Feature\Api;
 
-use App\User;
 use App\Project;
 use App\Objective;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ObjectiveControllerTest extends TestCase
 {
@@ -18,8 +15,7 @@ class ObjectiveControllerTest extends TestCase
     /** @test */
     public function it_returns_all_objectives_for_a_project()
     {
-        $user = factory(User::class)->create();
-        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn($user);
+        $this->authUser();
         $project = factory(Project::class)->create();
         $objectives = factory(Objective::class, 2)->create(['project_id' => $project->id]);
 
@@ -29,32 +25,32 @@ class ObjectiveControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_aborts_when_a_user_is_not_a_member_of_the_project()
-    {
-        $this->markTestSkipped();
-    }
-
-    /** @test */
     public function it_stores_a_new_objective_for_a_project()
     {
-        $user = factory(User::class)->create();
-        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn($user);
+        $user = $this->authUser();
         $project = factory(Project::class)->create(['owner_id' => $user->id]);
         $objective = factory(Objective::class)->make(['project_id' => $project->id]);
 
-        $this->post("/api/projects/{$objective->project->uid}/objectives", [
-            'project_id' => $objective->project_uid,
+        $this->post("/api/projects/{$project->uid}/objectives", [
+            'project_id' => $project->uid,
             'name' => $objective->name,
+            'due_on' => $objective->due_on,
         ])
              ->assertStatus(200)
-             ->assertJson(['data' => ['objective' => ['name' => $objective->name]]]);
+             ->assertJson([
+                 'data' => [
+                     'objective' => [
+                         'name' => $objective->name,
+                         'due_on' => $objective->due_on,
+                     ],
+                 ],
+             ]);
     }
 
     /** @test */
     public function it_aborts_when_a_user_is_not_the_project_owner()
     {
-        $user = factory(User::class)->create();
-        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn($user);
+        $user = $this->authUser();
         $objective = factory(Objective::class)->make();
 
         $this->post("/api/projects/{$objective->project->uid}/objectives", [
@@ -67,8 +63,7 @@ class ObjectiveControllerTest extends TestCase
     /** @test */
     public function it_removes_an_objective_from_a_project()
     {
-        $user = factory(User::class)->create();
-        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn($user);
+        $user = $this->authUser();
         $project = factory(Project::class)->create(['owner_id' => $user->id]);
         $objective = factory(Objective::class)->create(['project_id' => $project->id]);
 

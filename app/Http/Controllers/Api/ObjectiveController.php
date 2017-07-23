@@ -47,6 +47,7 @@ class ObjectiveController extends Controller
                     'project_id' => $project->id,
                     'uid' => str_random(10),
                     'name' => $request->name,
+                    'due_on' => $request->due_on,
                 ]),
             ]);
         }

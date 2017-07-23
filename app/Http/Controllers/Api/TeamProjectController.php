@@ -40,7 +40,7 @@ class TeamProjectController extends Controller
      */
     public function store($id, Request $request)
     {
-        if ($request->name) {
+        if ($request->has('name')) {
             return $this->response([
                 'project' => Project::create([
                     'uid' => str_random(10),
@@ -48,6 +48,7 @@ class TeamProjectController extends Controller
                     'owner_id' => JWTAuth::parseToken()->authenticate()->id,
                     'name' => $request->name,
                     'description' => $request->description,
+                    'due_on' => $request->due_on,
                 ]),
             ]);
         }
@@ -67,9 +68,9 @@ class TeamProjectController extends Controller
      */
     public function show($tid, $pid)
     {
-        $project = Project::with('team', 'objectives', 'streams')
-            ->whereUid($pid)
-            ->first();
+        $project = Project::with('members', 'objectives', 'milestones', 'owner', 'streams', 'tasks', 'team')
+                          ->whereUid($pid)
+                          ->first();
 
         return $this->response(['project' => $project]);
     }
@@ -77,7 +78,7 @@ class TeamProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -88,8 +89,8 @@ class TeamProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -100,7 +101,7 @@ class TeamProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

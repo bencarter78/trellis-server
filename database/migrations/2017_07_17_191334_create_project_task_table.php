@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStreamsTable extends Migration
+class CreateProjectTaskTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateStreamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('streams', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('team_id')->references('id')->on('teams');
+        Schema::create('project_task', function (Blueprint $table) {
             $table->integer('project_id')->references('id')->on('projects');
-            $table->string('uid')->unique()->index();
-            $table->string('name');
-            $table->timestamps();
+            $table->integer('task_id')->references('id')->on('tasks');
         });
     }
 
@@ -30,6 +26,6 @@ class CreateStreamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('streams');
+        Schema::dropIfExists('project_task');
     }
 }

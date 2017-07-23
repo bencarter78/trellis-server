@@ -9,14 +9,22 @@ class Stream extends Model
     /**
      * @var array
      */
-    protected $fillable = ['project_id', 'owner_id', 'uid', 'name'];
+    protected $fillable = ['team_id', 'project_id', 'uid', 'name'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function owner()
+    public function owners()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function members()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     /**
@@ -25,5 +33,13 @@ class Stream extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 }
