@@ -15,8 +15,8 @@ class ObjectiveControllerTest extends TestCase
     /** @test */
     public function it_returns_all_objectives_for_a_project()
     {
-        $this->authUser();
         $project = factory(Project::class)->create();
+        $project->members()->attach($this->authUser()->id);
         $objectives = factory(Objective::class, 2)->create(['project_id' => $project->id]);
 
         $this->get("/api/projects/{$project->uid}/objectives")
@@ -67,7 +67,7 @@ class ObjectiveControllerTest extends TestCase
         $project = factory(Project::class)->create(['owner_id' => $user->id]);
         $objective = factory(Objective::class)->create(['project_id' => $project->id]);
 
-        $this->delete("/api/projects/{$project->uid}/objectives/{$objective->id}")
+        $this->delete("/api/projects/{$project->uid}/objectives/{$objective->uid}")
              ->assertStatus(200);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ObjectiveRequest;
 use App\Project;
 use App\Objective;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 
 class ObjectiveController extends Controller
@@ -13,12 +13,14 @@ class ObjectiveController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param $id
+     * @param $puid
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($puid)
     {
-        $project = Project::whereUid($id)->first();
+        $project = Project::whereUid($puid)->first();
+
+        $this->authorizeForUser($this->userFromToken(), 'member', $project);
 
         return $this->response([
             'objectives' => Objective::where(['project_id' => $project->id])->get(),
@@ -28,86 +30,39 @@ class ObjectiveController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param                           $id
-     * @param  \Illuminate\Http\Request $request
+     * @param                  $puid
+     * @param ObjectiveRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id, Request $request)
+    public function store($puid, ObjectiveRequest $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        $project = Project::whereUid($id)->first();
+        $project = Project::whereUid($puid)->first();
 
-        if ($project->owner_id != $user->id) {
-            return abort(403, 'Only the project owner can create objectives');
-        }
+        $this->authorizeForUser($this->userFromToken(), 'owner', $project);
 
-        if ($request->name) {
-            return $this->response([
-                'objective' => Objective::create([
-                    'project_id' => $project->id,
-                    'uid' => str_random(10),
-                    'name' => $request->name,
-                    'due_on' => $request->due_on,
-                ]),
-            ]);
-        }
-
-        return $this->responseError([
-            'title' => 'Invalid data',
-            'detail' => 'Please enter the name of the objective.',
-        ], 400);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return $this->response([
+            'objective' => Objective::create([
+                'project_id' => $project->id,
+                'uid' => str_random(10),
+                'name' => $request->name,
+                'due_on' => $request->due_on,
+            ]),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int $puid
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, $oid)
+    public function destroy($puid, $ouid)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        $project = Project::whereUid($id)->first();
+        $project = Project::whereUid($puid)->first();
 
-        if ($project->owner_id != $user->id) {
-            return abort(403, 'Only the project owner can delete objectives');
-        }
+        $this->authorizeForUser($this->userFromToken(), 'owner', $project);
 
-        Objective::findOrFail($oid)->delete();
+        Objective::whereUid($ouid)->first()->delete();
 
         return $this->response();
     }

@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Stream;
 use App\Project;
-use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StreamRequest;
 
@@ -71,18 +69,6 @@ class ProjectStreamController extends Controller
         $this->authorizeForUser($this->userFromToken(), 'member', $stream->project);
 
         return $this->response(['stream' => $stream]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**

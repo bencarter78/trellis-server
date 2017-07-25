@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\TeamRequest;
 use App\Team;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -14,35 +15,24 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        return $this->response(['teams' => $user->teams]);
+        return $this->response(['teams' => $this->userFromToken()->teams]);
     }
 
     /**
-     * @param Request $request
+     * @param TeamRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(TeamRequest $request)
     {
-        if ($request->name) {
-            $team = Team::create([
-                'uid' => str_random(10),
-                'name' => $request->name,
-                'owner_id' => JWTAuth::parseToken()->authenticate()->id,
-            ]);
+        $team = Team::create([
+            'uid' => str_random(10),
+            'name' => $request->name,
+            'owner_id' => JWTAuth::parseToken()->authenticate()->id,
+        ]);
 
-            $team->members()->attach($team->owner_id);
+        $team->members()->attach($team->owner_id);
 
-            return $this->response([
-                'team' => $team,
-            ]);
-        }
-
-        return $this->responseError([
-            'title' => 'Invalid data',
-            'detail' => 'Please enter a name for your team.',
-        ], 400);
+        return $this->response(['team' => $team]);
     }
 
     /**
