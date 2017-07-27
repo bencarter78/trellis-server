@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\Api;
 
+use App\User;
+use App\Project;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-use App\User;
-use App\Project;
 
 class ProjectMemberControllerTest extends TestCase
 {

@@ -9,6 +9,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('/teams/{id}/projects', 'Api\TeamProjectController');
     Route::post('/teams/{id}/streams/search', 'Api\TeamStreamSearchController@index');
     Route::resource('/teams/{id}/streams', 'Api\TeamStreamController');
+    Route::post('/projects/{id}/invite', 'Api\ProjectInviteController@store');
     Route::resource('/projects/{id}/members', 'Api\ProjectMemberController');
     Route::resource('/projects/{id}/milestones', 'Api\MilestoneController');
     Route::resource('/projects/{id}/objectives', 'Api\ObjectiveController');
