@@ -19,6 +19,7 @@ class CreateStreamsTable extends Migration
             $table->integer('project_id')->references('id')->on('projects');
             $table->string('uid')->unique()->index();
             $table->string('name');
+            $table->boolean('is_private')->default(0);
             $table->timestamps();
         });
     }

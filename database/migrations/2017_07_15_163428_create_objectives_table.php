@@ -19,6 +19,7 @@ class CreateObjectivesTable extends Migration
             $table->string('uid')->unique()->index();
             $table->string('name');
             $table->date('due_on');
+            $table->boolean('is_private')->default(0);
             $table->timestamps();
         });
     }

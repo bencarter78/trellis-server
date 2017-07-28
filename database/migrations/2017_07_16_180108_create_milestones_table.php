@@ -20,6 +20,7 @@ class CreateMilestonesTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->date('due_on')->nullable();
+            $table->boolean('is_private')->default(0);
             $table->timestamps();
         });
     }
