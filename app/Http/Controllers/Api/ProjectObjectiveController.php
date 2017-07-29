@@ -10,7 +10,7 @@ use App\Http\Requests\ObjectiveRequest;
 
 use Carbon\Carbon;
 
-class ObjectiveController extends Controller
+class ProjectObjectiveController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -9,7 +9,7 @@ use App\Http\Requests\MilestoneRequest;
 
 use Carbon\Carbon;
 
-class MilestoneController extends Controller
+class ProjectMilestoneController extends Controller
 {
     /**
      * Store a newly created resource in storage.
