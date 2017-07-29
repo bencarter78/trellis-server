@@ -62,15 +62,17 @@ class TeamProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $tid
-     * @param $pid
+     * @param $tuid
+     * @param $puid
      * @return \Illuminate\Http\Response
      */
-    public function show($tid, $pid)
+    public function show($tuid, $puid)
     {
-        $project = Project::with('members', 'objectives', 'milestones', 'owner', 'streams', 'tasks', 'team')
-                          ->whereUid($pid)
+        $project = Project::with('members', 'milestones', 'objectives', 'owner', 'streams', 'tasks', 'team')
+                          ->whereUid($puid)
                           ->first();
+        dd($project->members->first()->id, $this->userFromToken()->id);
+        $this->authorizeForUser($this->userFromToken(), 'member', $project);
 
         return $this->response(['project' => $project]);
     }

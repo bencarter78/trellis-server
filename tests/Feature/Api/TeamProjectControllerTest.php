@@ -35,10 +35,15 @@ class TeamProjectControllerTest extends TestCase
              ->assertJson(['data' => ['project' => ['name' => 'Demo Project']]]);
     }
 
-    /** @test */
-    public function it_returns_a_project_for_a_team()
+    /** @test
+    @small */
+    public function it_returns_a_project_for_a_project_member()
     {
+        $user = $this->authUser();
+
         $project = factory(Project::class)->create();
+        $project->members()->attach($user->id);
+        dd($project->members->first()->id, $user->id);
 
         $response = $this->get("/api/teams/{$project->team->uid}/projects/{$project->uid}");
 
