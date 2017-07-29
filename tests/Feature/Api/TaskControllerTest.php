@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ProjectObjectiveControllerTest extends TestCase
+class TaskControllerTest extends TestCase
 {
     use DatabaseMigrations, WithoutMiddleware;
 

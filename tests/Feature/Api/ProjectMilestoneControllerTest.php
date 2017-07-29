@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class MilestoneControllerTest extends TestCase
+class ProjectMilestoneControllerTest extends TestCase
 {
     use DatabaseMigrations, WithoutMiddleware;
 
