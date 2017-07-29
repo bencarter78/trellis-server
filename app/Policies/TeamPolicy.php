@@ -19,4 +19,14 @@ class TeamPolicy
     {
         return $team->members->contains($user);
     }
+
+    /**
+     * @param User $user
+     * @param Team $team
+     * @return mixed
+     */
+    public function owner(User $user, Team $team)
+    {
+        return $team->owner_id == $user->id;
+    }
 }

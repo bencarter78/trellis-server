@@ -77,6 +77,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: bcrypt(config('trellis.demo.user.password')),
+        'username' => $faker->userName,
         'remember_token' => str_random(10),
     ];
 });

@@ -3,11 +3,9 @@
 namespace Tests\Feature\Api;
 
 use App\Team;
-use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TeamControllerTest extends TestCase
 {

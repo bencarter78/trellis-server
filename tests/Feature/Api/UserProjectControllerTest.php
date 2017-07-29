@@ -13,17 +13,10 @@ class UserProjectControllerTest extends TestCase
 {
     use DatabaseMigrations, WithoutMiddleware;
 
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     /** @test */
     public function it_returns_all_projects_for_the_authenticated_user()
     {
-        $user = factory(User::class)->create();
-
-        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn($user);
+        $user = $this->authUser();
 
         $project = factory(Project::class)->create(['owner_id' => $user->id]);
 

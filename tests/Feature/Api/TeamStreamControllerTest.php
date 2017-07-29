@@ -2,11 +2,9 @@
 
 namespace Tests\Feature\Api;
 
-use App\User;
 use App\Stream;
 use App\Project;
 use Tests\TestCase;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -17,8 +15,7 @@ class TeamStreamControllerTest extends TestCase
     /** @test */
     public function it_returns_all_streams_for_a_given_team()
     {
-        $user = factory(User::class)->create();
-        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn($user);
+        $this->authUser();
         $project = factory(Project::class)->create();
         $streams = factory(Stream::class, 2)->create([
             'team_id' => $project->team_id,

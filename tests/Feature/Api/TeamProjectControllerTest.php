@@ -3,11 +3,9 @@
 namespace Tests\Feature\Api;
 
 use App\Team;
-use App\User;
 use App\Project;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -15,15 +13,11 @@ class TeamProjectControllerTest extends TestCase
 {
     use DatabaseMigrations, WithoutMiddleware;
 
-    public function setUp()
-    {
-        parent::setUp();
-        JWTAuth::shouldReceive('parseToken->authenticate')->andReturn(factory(User::class)->create());
-    }
-
     /** @test */
     public function it_creates_a_new_project_for_a_team()
     {
+        $this->authUser();
+
         $team = factory(Team::class)->create();
 
         $this->post("/api/teams/{$team->uid}/projects", [
@@ -35,15 +29,13 @@ class TeamProjectControllerTest extends TestCase
              ->assertJson(['data' => ['project' => ['name' => 'Demo Project']]]);
     }
 
-    /** @test
-    @small */
+    /** @test */
     public function it_returns_a_project_for_a_project_member()
     {
         $user = $this->authUser();
 
         $project = factory(Project::class)->create();
         $project->members()->attach($user->id);
-        dd($project->members->first()->id, $user->id);
 
         $response = $this->get("/api/teams/{$project->team->uid}/projects/{$project->uid}");
 

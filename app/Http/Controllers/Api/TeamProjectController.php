@@ -71,7 +71,7 @@ class TeamProjectController extends Controller
         $project = Project::with('members', 'milestones', 'objectives', 'owner', 'streams', 'tasks', 'team')
                           ->whereUid($puid)
                           ->first();
-        dd($project->members->first()->id, $this->userFromToken()->id);
+
         $this->authorizeForUser($this->userFromToken(), 'member', $project);
 
         return $this->response(['project' => $project]);
