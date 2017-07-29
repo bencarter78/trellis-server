@@ -26,15 +26,16 @@ class ProjectStreamControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_a_new_stream_for_a_project()
+    public function a_project_owner_can_cretae_a_new_stream_for_a_project()
     {
         $user = $this->authUser();
+
         $project = factory(Project::class)->create(['owner_id' => $user->id]);
+
         $stream = factory(Stream::class)->make(['project_id' => $project->id]);
 
         $this->post("/api/projects/{$project->uid}/streams", [
-            'project_id' => $project->uid,
-            'owner_id' => $project->owner_id,
+            'owner_id' => $user->username,
             'name' => $stream->name,
         ])
              ->assertStatus(200)
@@ -45,11 +46,11 @@ class ProjectStreamControllerTest extends TestCase
     public function it_aborts_when_a_user_is_not_the_project_owner()
     {
         $user = $this->authUser();
+
         $stream = factory(Stream::class)->make();
 
         $this->post("/api/projects/{$stream->project->uid}/streams", [
-            'project_id' => $stream->project_id,
-            'owner_id' => $stream->owner_id,
+            'owner_id' => $user->id,
             'name' => $stream->name,
         ])
              ->assertStatus(403);

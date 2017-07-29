@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\User;
 use App\Stream;
 use App\Project;
 use App\Http\Controllers\Controller;
@@ -39,19 +40,21 @@ class ProjectStreamController extends Controller
 
         $this->authorizeForUser($this->userFromToken(), 'owner', $project);
 
+        $user = User::whereUsername($request->owner_id)->first();
+
         $stream = Stream::firstOrCreate([
             'name' => $request->name,
             'team_id' => $project->team_id,
         ], [
             'project_id' => $project->id,
-            'uid' => str_random(10),
-            //            'name' => $request->name,
+            'uid' => generateUid(),
+            'owner_id' => $user->id,
         ]);
 
-        $stream->owners()->attach($request->owner_id);
+        $stream->owners()->attach($user->id);
 
         return $this->response([
-            'stream' => $stream,
+            'stream' => $stream->load('owners'),
         ]);
     }
 

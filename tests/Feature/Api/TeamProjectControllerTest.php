@@ -14,11 +14,12 @@ class TeamProjectControllerTest extends TestCase
     use DatabaseMigrations, WithoutMiddleware;
 
     /** @test */
-    public function it_creates_a_new_project_for_a_team()
+    public function a_team_member_can_create_a_new_project_for_a_team()
     {
-        $this->authUser();
+        $user = $this->authUser();
 
         $team = factory(Team::class)->create();
+        $team->members()->attach($user->id);
 
         $this->post("/api/teams/{$team->uid}/projects", [
             'name' => 'Demo Project',

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Team;
 use App\Project;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 
 class TeamProjectController extends Controller
@@ -22,34 +21,34 @@ class TeamProjectController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param                           $id
+     * @param                           $tuid
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id, Request $request)
+    public function store($tuid, Request $request)
     {
+        $team = Team::whereUid($tuid)->first();
+
+        $user = $this->userFromToken();
+
+        $this->authorizeForUser($user, 'member', $team);
+
         if ($request->has('name')) {
+            $project = Project::create([
+                'uid' => generateUid(),
+                'team_id' => $team->id,
+                'owner_id' => $user->id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'due_on' => $request->due_on,
+            ]);
+
+            $project->members()->attach($user->id);
+
             return $this->response([
-                'project' => Project::create([
-                    'uid' => str_random(10),
-                    'team_id' => Team::whereUid($id)->first()->id,
-                    'owner_id' => JWTAuth::parseToken()->authenticate()->id,
-                    'name' => $request->name,
-                    'description' => $request->description,
-                    'due_on' => $request->due_on,
-                ]),
+                'project' => $project,
             ]);
         }
 
@@ -68,46 +67,12 @@ class TeamProjectController extends Controller
      */
     public function show($tuid, $puid)
     {
-        $project = Project::with('members', 'milestones', 'objectives', 'owner', 'streams', 'tasks', 'team')
+        $project = Project::with('members', 'milestones', 'objectives', 'owner', 'streams', 'streams.owners', 'tasks', 'team')
                           ->whereUid($puid)
                           ->first();
 
         $this->authorizeForUser($this->userFromToken(), 'member', $project);
 
         return $this->response(['project' => $project]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

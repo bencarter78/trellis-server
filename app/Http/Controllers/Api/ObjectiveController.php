@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\ObjectiveRequest;
 use App\Project;
 use App\Objective;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ObjectiveRequest;
+
+use Carbon\Carbon;
 
 class ObjectiveController extends Controller
 {
@@ -43,9 +45,9 @@ class ObjectiveController extends Controller
         return $this->response([
             'objective' => Objective::create([
                 'project_id' => $project->id,
-                'uid' => str_random(10),
+                'uid' => generateUid(),
                 'name' => $request->name,
-                'due_on' => $request->due_on,
+                'due_on' => Carbon::createFromFormat('d/m/Y', $request->due_on),
             ]),
         ]);
     }

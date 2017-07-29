@@ -21,7 +21,7 @@ class TeamStreamControllerTest extends TestCase
             'team_id' => $project->team_id,
             'project_id' => $project->id,
         ]);
-        
+
         $this->get("/api/teams/{$project->team->uid}/streams")
              ->assertStatus(200)
              ->assertJson(['data' => ['streams' => $streams->toArray()]]);

@@ -15,7 +15,7 @@ class UserProjectController extends Controller
     public function index()
     {
         return $this->response([
-            'projects' => Project::with('team')->where('owner_id', JWTAuth::parseToken()->authenticate()->id)->get(),
+            'projects' => Project::with('team')->where('owner_id', $this->userFromToken()->id)->get(),
         ]);
     }
 }

@@ -7,6 +7,8 @@ use App\Milestone;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MilestoneRequest;
 
+use Carbon\Carbon;
+
 class MilestoneController extends Controller
 {
     /**
@@ -25,10 +27,10 @@ class MilestoneController extends Controller
         return $this->response([
             'milestone' => Milestone::create([
                 'project_id' => $project->id,
-                'uid' => str_random(10),
+                'uid' => generateUid(),
                 'name' => $request->name,
                 'description' => $request->description,
-                'due_on' => $request->due_on,
+                'due_on' => Carbon::createFromFormat('d/m/Y', $request->due_on),
             ]),
         ]);
     }
@@ -61,6 +63,8 @@ class MilestoneController extends Controller
         $milestone = Milestone::whereUid($muid)->first();
 
         $this->authorizeForUser($this->userFromToken(), 'owner', $milestone->project);
+
+        $milestone->delete();
 
         return $this->response();
     }

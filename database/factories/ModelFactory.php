@@ -15,12 +15,6 @@ $factory->define(App\Milestone::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(App\User::class, 'demo', function (Faker\Generator $faker) {
-    return [
-        'email' => config('trellis.demo.user.email'),
-    ];
-});
-
 $factory->define(App\Objective::class, function (Faker\Generator $faker) {
     return [
         'project_id' => function () {
@@ -77,7 +71,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: bcrypt(config('trellis.demo.user.password')),
-        'username' => $faker->userName,
+        'username' => str_random(10),
         'remember_token' => str_random(10),
     ];
 });

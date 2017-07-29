@@ -25,7 +25,7 @@ class TeamController extends Controller
     public function store(TeamRequest $request)
     {
         $team = Team::create([
-            'uid' => str_random(10),
+            'uid' => generateUid(),
             'name' => $request->name,
             'owner_id' => JWTAuth::parseToken()->authenticate()->id,
         ]);

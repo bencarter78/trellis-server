@@ -8,9 +8,6 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-/** 
- * @group small
- */
 class TeamMemberControllerTest extends TestCase
 {
     use DatabaseMigrations, WithoutMiddleware;

@@ -26,7 +26,7 @@ class MilestoneRequest extends FormRequest
         return [
             'name' => 'required',
             'description' => 'required',
-            'due_on' => 'required|date'
+            'due_on' => 'required|date_format:d/m/Y'
         ];
     }
 

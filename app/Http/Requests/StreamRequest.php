@@ -15,7 +15,7 @@ class StreamRequest extends FormRequest
      */
     public function authorize()
     {
-        return Project::whereUid($this->id)->first()->owner_id == JWTAuth::parseToken()->authenticate()->id;
+        return true;
     }
 
     /**
