@@ -4,29 +4,27 @@ namespace App\Http\Controllers\Api;
 
 use App\Project;
 use App\Objective;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ObjectiveRequest;
 
-use Carbon\Carbon;
-
-class ProjectTaskController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param $puid
      * @return \Illuminate\Http\Response
      */
-    public function index($puid)
+    public function index(Request $request)
     {
-        $project = Project::whereUid($puid)->first();
+        $model = 'App\\'.ucfirst($request->resource);
 
-        $this->authorizeForUser($this->userFromToken(), 'member', $project);
+        $resource = (new $model())->whereUid($request->uid)->first();
 
-        return $this->response([
-            'objectives' => Objective::where(['project_id' => $project->id])->get(),
-        ]);
+        $this->authorizeForUser($this->userFromToken(), 'member', $resource);
+
+        return $this->response(['tasks' => $resource->tasks]);
     }
 
     /**

@@ -54,6 +54,27 @@ $factory->define(App\Stream::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Task::class, function (Faker\Generator $faker) {
+    return [
+        'uid' => str_random(10),
+        'assigned_to' => function () {
+            return factory(App\User::class)->create()->id;
+        },
+        'name' => 'My Amazing Team',
+        'due_on' => Carbon::now()->addMonth(),
+        'is_complete' => null
+    ];
+});
+
+$factory->state(App\Task::class, 'project', function (Faker\Generator $faker) {
+    return [
+        'owner_id' => function () {
+            return factory(Project::class)->create()->id;
+        },
+        'owner_type' => Project::class,
+    ];
+});
+
 $factory->define(App\Team::class, function (Faker\Generator $faker) {
     return [
         'uid' => str_random(10),

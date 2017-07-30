@@ -15,6 +15,12 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('uid');
+            $table->string('assigned_to')->references('id')->on('users');
+            $table->morphs('owner');
+            $table->string('name');
+            $table->date('due_on');
+            $table->date('is_complete')->nullable();
             $table->boolean('is_private')->default(0);
             $table->timestamps();
         });

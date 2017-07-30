@@ -14,5 +14,6 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('/projects/{uid}/objectives', 'Api\ProjectObjectiveController');
     Route::resource('/projects/{uid}/streams', 'Api\ProjectStreamController');
     Route::resource('/projects', 'Api\UserProjectController');
+    Route::resource('/tasks', 'Api\TaskController');
     Route::resource('/teams', 'Api\TeamController');
 });
