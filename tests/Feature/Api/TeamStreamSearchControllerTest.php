@@ -23,7 +23,7 @@ class TeamStreamSearchControllerTest extends TestCase
             'name' => 'Test ' . str_random(),
         ]);
 
-        $this->post("/api/teams/{$team->uid}/streams/search", ['q' => 'test'])
+        $this->get("/api/teams/{$team->uid}/streams/search?q=test")
              ->assertStatus(200)
              ->assertJson(['data' => ['streams' => $streams->toArray()]]);
     }
@@ -40,6 +40,7 @@ class TeamStreamSearchControllerTest extends TestCase
             'name' => 'Test ' . str_random(),
         ]);
 
-        $this->post("/api/teams/{$team->uid}/streams/search", ['q' => 'test'])->assertStatus(403);
+        $this->get("/api/teams/{$team->uid}/streams/search?q=test")
+             ->assertStatus(403);
     }
 }
