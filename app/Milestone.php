@@ -12,6 +12,11 @@ class Milestone extends Model
     protected $fillable = ['project_id', 'uid', 'name', 'description', 'due_on'];
 
     /**
+     * @var array
+     */
+    protected $dates = ['due_on'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function project()

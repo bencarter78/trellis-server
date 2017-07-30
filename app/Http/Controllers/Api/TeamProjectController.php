@@ -67,7 +67,7 @@ class TeamProjectController extends Controller
      */
     public function show($tuid, $puid)
     {
-        $project = Project::with('members', 'milestones', 'objectives', 'owner', 'streams', 'streams.owners', 'tasks', 'team')
+        $project = Project::with('members', 'milestones', 'milestones.tasks', 'objectives', 'objectives.tasks', 'owner', 'streams', 'streams.owners', 'streams.tasks', 'tasks', 'team')
                           ->whereUid($puid)
                           ->first();
 

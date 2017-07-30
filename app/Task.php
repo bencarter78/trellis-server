@@ -12,6 +12,11 @@ class Task extends Model
     protected $fillable = ['uid', 'assigned_to', 'name', 'due_on', 'is_complete'];
 
     /**
+     * @var array
+     */
+    protected $dates = ['due_on'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function assignedTo()

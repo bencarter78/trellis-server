@@ -22,8 +22,13 @@ $factory->define(App\Objective::class, function (Faker\Generator $faker) {
         },
         'uid' => str_random(10),
         'name' => $faker->sentence,
+        'is_complete' => null,
         'due_on' => Carbon::now()->addMonth(),
     ];
+});
+
+$factory->define(App\Objective::class, 'completed', function (Faker\Generator $faker) {
+    return ['is_complete' => Carbon::yesterday()];
 });
 
 $factory->define(App\Project::class, function (Faker\Generator $faker) {
@@ -62,7 +67,7 @@ $factory->define(App\Task::class, function (Faker\Generator $faker) {
         },
         'name' => ucwords($faker->words(4, true)),
         'due_on' => Carbon::now()->addMonth(),
-        'is_complete' => null
+        'is_complete' => null,
     ];
 });
 
