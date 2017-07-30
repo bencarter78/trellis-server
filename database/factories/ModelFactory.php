@@ -27,7 +27,7 @@ $factory->define(App\Objective::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Objective::class, 'completed', function (Faker\Generator $faker) {
+$factory->state(App\Objective::class, 'completed', function (Faker\Generator $faker) {
     return ['is_complete' => Carbon::yesterday()];
 });
 
