@@ -17,6 +17,7 @@ class CreateActivitiesTable extends Migration
             $table->increments('id');
             $table->boolean('is_private')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

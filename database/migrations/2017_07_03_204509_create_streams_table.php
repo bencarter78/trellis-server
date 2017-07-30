@@ -21,6 +21,7 @@ class CreateStreamsTable extends Migration
             $table->string('name');
             $table->boolean('is_private')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

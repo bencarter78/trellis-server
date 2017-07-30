@@ -22,6 +22,7 @@ class CreateMilestonesTable extends Migration
             $table->date('due_on')->nullable();
             $table->boolean('is_private')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

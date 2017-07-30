@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\TaskRequest;
 use App\Project;
 use App\Objective;
+use App\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,13 +16,14 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $model = 'App\\'.ucfirst($request->resource);
+        $model = 'App\\' . ucfirst($request->resource);
 
-        $resource = (new $model())->whereUid($request->uid)->first();
+        $resource = (new $model)->whereUid($request->uid)->first();
 
         $this->authorizeForUser($this->userFromToken(), 'member', $resource);
 
@@ -30,20 +33,21 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param                  $puid
-     * @param ObjectiveRequest $request
+     * @param TaskRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store($puid, ObjectiveRequest $request)
+    public function store(TaskRequest $request)
     {
-        $project = Project::whereUid($puid)->first();
+        $model = 'App\\' . ucfirst($request->resource);
 
-        $this->authorizeForUser($this->userFromToken(), 'owner', $project);
+        $resource = (new $model())->whereUid($request->uid)->first();
+
+        $this->authorizeForUser($this->userFromToken(), 'member', $resource);
 
         return $this->response([
-            'objective' => Objective::create([
-                'project_id' => $project->id,
+            'task' => $resource->tasks()->create([
                 'uid' => generateUid(),
+                'assigned_to' => $request->assigned_to,
                 'name' => $request->name,
                 'due_on' => Carbon::createFromFormat('d/m/Y', $request->due_on),
             ]),
@@ -53,16 +57,16 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $puid
+     * @param  string $tuid
      * @return \Illuminate\Http\Response
      */
-    public function destroy($puid, $ouid)
+    public function destroy($tuid)
     {
-        $project = Project::whereUid($puid)->first();
+        $task = Task::whereUid($tuid)->first();
 
-        $this->authorizeForUser($this->userFromToken(), 'owner', $project);
+        $this->authorizeForUser($this->userFromToken(), 'owner', $task->owner);
 
-        Objective::whereUid($ouid)->first()->delete();
+        $task->delete();
 
         return $this->response();
     }

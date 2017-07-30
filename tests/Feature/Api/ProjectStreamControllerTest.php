@@ -26,7 +26,7 @@ class ProjectStreamControllerTest extends TestCase
     }
 
     /** @test */
-    public function a_project_owner_can_cretae_a_new_stream_for_a_project()
+    public function a_project_owner_can_create_a_new_stream_for_a_project()
     {
         $user = $this->authUser();
 

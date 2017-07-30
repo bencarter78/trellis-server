@@ -23,6 +23,7 @@ class CreateTasksTable extends Migration
             $table->date('is_complete')->nullable();
             $table->boolean('is_private')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

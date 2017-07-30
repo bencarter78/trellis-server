@@ -19,6 +19,7 @@ class CreateTeamsTable extends Migration
             $table->string('name');
             $table->integer('owner_id')->references('id')->on('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

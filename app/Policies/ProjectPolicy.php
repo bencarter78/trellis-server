@@ -12,21 +12,21 @@ class ProjectPolicy
 
     /**
      * @param User    $user
-     * @param Project $project
+     * @param Project $model
      * @return bool
      */
-    public function owner(User $user, Project $project)
+    public function owner(User $user, Project $model)
     {
-        return $project->owner_id == $user->id;
+        return $model->owner_id == $user->id;
     }
 
     /**
      * @param User    $user
-     * @param Project $project
+     * @param Project $model
      * @return mixed
      */
-    public function member(User $user, Project $project)
+    public function member(User $user, Project $model)
     {
-        return $project->owner_id == $user->id || $project->members->contains($user);
+        return $model->owner_id == $user->id || $model->members->contains($user);
     }
 }

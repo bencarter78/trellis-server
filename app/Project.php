@@ -61,7 +61,7 @@ class Project extends Model
      */
     public function tasks()
     {
-        return $this->morphTo(Task::class);
+        return $this->morphMany(Task::class, 'owner');
     }
 
     /**

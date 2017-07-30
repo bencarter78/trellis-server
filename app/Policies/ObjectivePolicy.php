@@ -3,29 +3,29 @@
 namespace App\Policies;
 
 use App\User;
-use App\Stream;
+use App\Objective;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class StreamPolicy
+class ObjectivePolicy
 {
     use HandlesAuthorization;
 
     /**
      * @param User      $user
-     * @param Stream $model
+     * @param Objective $model
      * @return bool
      */
-    public function owner(User $user, Stream $model)
+    public function owner(User $user, Objective $model)
     {
-        return $model->owners->last()->id == $user->id || $model->project->owner_id == $user->id;
+        return $model->project->owner_id == $user->id;
     }
 
     /**
      * @param User    $user
-     * @param Stream $model
+     * @param Objective $model
      * @return mixed
      */
-    public function member(User $user, Stream $model)
+    public function member(User $user, Objective $model)
     {
         return $model->project->members->contains($user);
     }

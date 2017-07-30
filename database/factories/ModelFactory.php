@@ -60,25 +60,25 @@ $factory->define(App\Task::class, function (Faker\Generator $faker) {
         'assigned_to' => function () {
             return factory(App\User::class)->create()->id;
         },
-        'name' => 'My Amazing Team',
+        'name' => ucwords($faker->words(4, true)),
         'due_on' => Carbon::now()->addMonth(),
         'is_complete' => null
     ];
 });
 
-$factory->state(App\Task::class, 'project', function (Faker\Generator $faker) {
+$factory->state(App\Task::class, 'project', function () {
     return [
         'owner_id' => function () {
-            return factory(Project::class)->create()->id;
+            return factory(App\Project::class)->create()->id;
         },
-        'owner_type' => Project::class,
+        'owner_type' => App\Project::class,
     ];
 });
 
 $factory->define(App\Team::class, function (Faker\Generator $faker) {
     return [
         'uid' => str_random(10),
-        'name' => 'My Amazing Team',
+        'name' => ucwords($faker->words(2, true)),
         'owner_id' => function () {
             return factory(User::class)->create()->id;
         },
