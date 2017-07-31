@@ -16,7 +16,7 @@ class TeamStreamSearchController extends Controller
      */
     public function index($uid, Request $request)
     {
-        $team = Team::where('uid', $uid)->first();
+        $team = Team::whereUid($uid)->first();
 
         $this->authorizeForUser($this->userFromToken(), 'member', $team);
 
