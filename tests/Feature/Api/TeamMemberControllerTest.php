@@ -5,12 +5,12 @@ namespace Tests\Feature\Api;
 use App\Team;
 use App\User;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class TeamMemberControllerTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /** @test */
     public function it_returns_all_members_of_a_team()

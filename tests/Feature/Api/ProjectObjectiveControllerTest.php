@@ -5,12 +5,12 @@ namespace Tests\Feature\Api;
 use App\Project;
 use App\Objective;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ProjectObjectiveControllerTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /** @test */
     public function it_returns_all_objectives_for_a_project()

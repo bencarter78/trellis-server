@@ -6,12 +6,12 @@ use App\Team;
 use App\Project;
 use Carbon\Carbon;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class TeamProjectControllerTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /** @test */
     public function a_team_member_can_create_a_new_project_for_a_team()

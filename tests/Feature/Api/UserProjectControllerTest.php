@@ -6,12 +6,12 @@ use App\User;
 use App\Project;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserProjectControllerTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /** @test */
     public function it_returns_all_projects_for_the_authenticated_user()

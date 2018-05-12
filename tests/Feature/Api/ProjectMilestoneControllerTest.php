@@ -5,12 +5,12 @@ namespace Tests\Feature\Api;
 use App\Project;
 use App\Milestone;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ProjectMilestoneControllerTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /** @test */
     public function it_stores_a_new_milestone_for_a_project()

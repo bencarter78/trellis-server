@@ -40,7 +40,7 @@ class TaskControllerTest extends TestCase
             'owner_type' => Project::class,
         ]);
 
-        $this->get("/api/tasks?resource=project&uid={$project->uid}")
+        $this->json('GET', "/api/tasks?resource=project&uid={$project->uid}")
              ->assertStatus(200)
              ->assertJson(['data' => ['tasks' => $tasks->toArray()]]);
     }

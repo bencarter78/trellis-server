@@ -5,12 +5,12 @@ namespace Tests\Feature\Api;
 use App\Project;
 use Tests\TestCase;
 use App\Jobs\SendInvitation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ProjectInviteControllerTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /** @test */
     public function a_project_owner_can_send_an_invite_to_an_email()

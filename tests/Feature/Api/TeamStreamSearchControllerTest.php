@@ -5,12 +5,12 @@ namespace Tests\Feature\Api;
 use App\Team;
 use App\Stream;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class TeamStreamSearchControllerTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     /** @test */
     public function it_returns_team_streams_for_a_given_term_for_a_team_member()
